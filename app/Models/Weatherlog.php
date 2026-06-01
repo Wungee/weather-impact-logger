@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Weatherlog extends Model
+class WeatherLog extends Model
 {
-    //
+    protected $table = 'weather_logs';
+    protected $guarded = [];
 }
