@@ -2,47 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Site;
+use App\Models\WeatherLog;
 use Illuminate\Http\Request;
 
 class WeatherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function store(Request $request, Site $site)
     {
-        //
-    }
+        $validated = $request->validate([
+            'date' => 'required|date',
+            'condition' => 'required|in:rainy,sunny,windy,overcast,cloudy',
+            'temperature' => 'nullable|numeric',
+            'precipitation' => 'nullable|numeric',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $validated['site_id'] = $site->id;
+        $log = WeatherLog::create($validated);
+        return response()->json($log, 201);
     }
 }
